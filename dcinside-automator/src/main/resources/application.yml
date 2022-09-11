@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+dcinside:
+  author-name: "봇이름"
+  author-pass: "봇패스워드"
