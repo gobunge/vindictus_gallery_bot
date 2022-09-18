@@ -3,7 +3,6 @@ FROM openjdk:11-jdk AS build-stage
 WORKDIR /workspace/app
 
 COPY src /workspace/app
-COPY application.yml /workspace/app
 COPY gradle /workspace/app/gradle
 COPY gradlew settings.gradle build.gradle /workspace/app/
 
