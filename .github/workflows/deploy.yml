@@ -32,7 +32,16 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Set application.yml
+        working-directory: dcinside-automator
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }} 
+        env:
+          dcinside.author-name: ${{ secrets.BOT_USER_NICKNAME }}
+          dcinside.author-pass: ${{ secrets.BOT_USER_PASSWORD }}
       - name: Build Docker Image
+        working-directory: dcinside-automator
         run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release ./dcinside-automator
       - name: Push and Deploy
         run: |
