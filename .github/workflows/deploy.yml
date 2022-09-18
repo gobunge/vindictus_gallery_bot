@@ -6,6 +6,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
+  RESOURCE_PATH: ./src/main/resources/application.yml
 jobs:
   deploy:
     name: Build and deploy
@@ -13,10 +14,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
       - name: Install Utilities
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
+
       - name: Install AWS Client
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -26,14 +29,27 @@ jobs:
           curl "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl" -o "lightsailctl"
           sudo mv "lightsailctl" "/usr/local/bin/lightsailctl"
           sudo chmod +x /usr/local/bin/lightsailctl
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: ${{ env.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Set application.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }} 
+        env:
+          dcinside.author-name: ${{ secrets.BOT_USER_NICKNAME }}
+          dcinside.author-pass: ${{ secrets.BOT_USER_PASSWORD }}
+        working-directory: dcinside-automator
+
       - name: Build Docker Image
         run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release ./dcinside-automator
+        working-directory: dcinside-automator
+        
       - name: Push and Deploy
         run: |
           service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
