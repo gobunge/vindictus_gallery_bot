@@ -6,6 +6,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
+  PROJECT_DIR: dcinside-automator
 jobs:
   deploy:
     name: Build and deploy
@@ -33,7 +34,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build Docker Image
-        run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release .
+        run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release ./${{ PROJECT_DIR }}
       - name: Push and Deploy
         run: |
           service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
