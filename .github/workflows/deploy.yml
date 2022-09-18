@@ -44,6 +44,7 @@ jobs:
           dcinside.author-name: ${{ secrets.BOT_USER_NICKNAME }}
           dcinside.author-pass: ${{ secrets.BOT_USER_PASSWORD }}
       - name: Build Docker Image
+        working-directory: dcinside-automator
         run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release ./dcinside-automator
       - name: Push and Deploy
         run: |
