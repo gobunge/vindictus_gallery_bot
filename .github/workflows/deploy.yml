@@ -7,6 +7,9 @@ env:
   AWS_REGION: ap-northeast-2
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
   RESOURCE_PATH: ./src/main/resources/application.yml
+defaults:
+      run:
+        working-directory: dcinside-automator
 jobs:
   defaults:
       run:
