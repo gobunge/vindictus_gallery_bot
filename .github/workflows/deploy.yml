@@ -6,7 +6,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
-  RESOURCE_PATH: /dcinside-automator/resources/application.yml
+  RESOURCE_PATH: ./dcinside-automator/src/main/resources/application.yml
 jobs:
   deploy:
     name: Build and deploy
