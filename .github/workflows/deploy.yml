@@ -6,8 +6,11 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
-  RESOURCE_PATH: ./dcinside-automator/src/main/resources/application.yml
+  RESOURCE_PATH: ./src/main/resources/application.yml
 jobs:
+  defaults:
+      run:
+        working-directory: dcinside-automator
   deploy:
     name: Build and deploy
     runs-on: ubuntu-latest
@@ -34,7 +37,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Set application.yml
-        working-directory: dcinside-automator
         uses: microsoft/variable-substitution@v1
         with:
           files: ${{ env.RESOURCE_PATH }} 
