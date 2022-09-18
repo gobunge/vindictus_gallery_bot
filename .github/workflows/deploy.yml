@@ -8,9 +8,15 @@ env:
   AWS_LIGHTSAIL_SERVICE_NAME: amazon-lightsail-containers-vindictus-automator
   RESOURCE_PATH: ./src/main/resources/application.yml
 jobs:
+  defaults:
+      run:
+        working-directory: dcinside-automator
   deploy:
     name: Build and deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dcinside-automator
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -47,6 +53,7 @@ jobs:
         working-directory: dcinside-automator
 
       - name: Build Docker Image
+        working-directory: dcinside-automator
         run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release ./dcinside-automator
         working-directory: dcinside-automator
         
