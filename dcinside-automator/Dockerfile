@@ -2,7 +2,7 @@
 FROM openjdk:11-jdk AS build-stage
 WORKDIR /workspace/app
 
-COPY src /workspace/app
+COPY src /workspace/app/src
 COPY gradle /workspace/app/gradle
 COPY gradlew settings.gradle build.gradle /workspace/app/
 
@@ -15,6 +15,6 @@ ARG DEPENDENCY=/workspace/app/build/dependencies
 
 COPY --from=build-stage ${DEPENDENCY}/BOOT-INF/lib ./app/lib
 COPY --from=build-stage ${DEPENDENCY}/META-INF ./app/META-INF
-COPY --from=build-stage ${DEPENDENCY}/classes ./app
+COPY --from=build-stage ${DEPENDENCY}/BOOT-INF/classes ./app/
 
 ENTRYPOINT ["java","-cp","app:app/lib/*","io.github.gobunge.ApiApplication"]
